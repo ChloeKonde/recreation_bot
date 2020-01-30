@@ -1,51 +1,24 @@
-import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.TelegramBotsApi;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
-import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
+import org.telegram.abilitybots.api.bot.AbilityBot;
+import org.telegram.abilitybots.api.objects.Ability;
+import org.telegram.abilitybots.api.objects.Locality;
+import org.telegram.abilitybots.api.objects.Privacy;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 
-public class Bot extends TelegramLongPollingBot {
+public class Bot extends AbilityBot {
+    private static String BOT_TOKEN = "912658745:AAEvvAGV-L5ajB_wkAW74eZq52K7rPtZSSM";
+    private static String BOT_NAME = "recreation_nsu_bot";
 
-    @Override
-    public void onUpdateReceived(Update update) {
-        String message = update.getMessage().getText();
-        sendMsg(update.getMessage().getChatId().toString(), message);
-    }
-
-    @SuppressWarnings("deprecation")
-    public synchronized void sendMsg(String chatId, String s) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(s);
-        try {
-            sendMessage(sendMessage);
-        }catch (TelegramApiException e) {
-            System.err.println("Exception" + e.toString());
-        }
-
+    protected Bot(DefaultBotOptions botOptions){
+        super(BOT_TOKEN, BOT_NAME, botOptions);
     }
 
     @Override
-    public String getBotUsername() {
-        return "recreation_nsu_bot";
+    public int creatorId() {
+        return 0;
     }
 
-    @Override
-    public String getBotToken() {
-        return "912658745:AAEvvAGV-L5ajB_wkAW74eZq52K7rPtZSSM";
-    }
-
-    public static void main(String[] args) {
-        ApiContextInitializer.init();
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-        
-        try {
-            telegramBotsApi.registerBot(new Bot());
-        } catch (TelegramApiRequestException e) {
-            e.printStackTrace();
-        }
+    public Ability sayHelloWorld() {
+        return Ability.builder().name("hello").info("Says hello").locality(Locality.ALL).privacy(Privacy.PUBLIC)
+                .action(ctx -> silent.send("Hello, world", ctx.chatId())).build();
     }
 }

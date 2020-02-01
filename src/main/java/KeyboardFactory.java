@@ -23,8 +23,8 @@ public class KeyboardFactory {
             ReplyKeyboardMarkup replyKeyboard = new ReplyKeyboardMarkup();
             List<KeyboardRow>  row = new ArrayList<>();
             KeyboardRow keyboardRow = new KeyboardRow();
-            keyboardRow.add("/third");
-            keyboardRow.add("/fourth");
+            keyboardRow.add("3 floor");
+            keyboardRow.add("4 floor");
             row.add(keyboardRow);
             replyKeyboard.setResizeKeyboard(Boolean.TRUE);
             return replyKeyboard.setKeyboard(row);
